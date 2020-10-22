@@ -64,7 +64,3 @@ def index():
         content=str(content)
     )
     return json.dumps(response)
-
-
-if __name__ == '__main__':
-    app.run()
