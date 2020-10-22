@@ -1,4 +1,9 @@
+beautifulsoup4
+codecov
+flake8
 Flask
 gunicorn
+pytest
+pytest-cov
 requests
-beautifulsoup4
+tox
