@@ -20,7 +20,7 @@ def test_incomplete(client):
 
 
 def test_invalid(client):
-    resp = client.post('/', data=dict(
+    resp = client.post('/', json=dict(
         host='invalid.tld',
         url='https://invalid.tld'
     ))
@@ -35,7 +35,7 @@ def test_invalid(client):
 
 
 def test_valid(client):
-    resp = client.post('/', data=dict(
+    resp = client.post('/', json=dict(
         host='github.com',
         url='https://github.com'
     ))

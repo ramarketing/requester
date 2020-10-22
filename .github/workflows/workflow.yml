@@ -39,7 +39,7 @@ jobs:
       env:
         APP_ENV: ${{ secrets.APP_ENV }}
       run: |
-        coverage run --source='.' tests.py
+        coverage run -m pytest tests.py
         coverage xml
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1

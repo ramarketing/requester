@@ -17,7 +17,7 @@ def index():
         host = data['host']
         method = data.get('method', 'get')
         url = data['url']
-    except KeyError:
+    except (KeyError, TypeError):
         payload = dict(message='Invalid payload')
         return Response(
             json.dumps(payload), 400, mimetype='application/json'
