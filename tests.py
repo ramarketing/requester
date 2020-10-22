@@ -1,12 +1,12 @@
 import json
 import pytest
 
-from requester.application import app
+import requester
 
 
 @pytest.fixture
 def client():
-    return app.test_client()
+    return requester.app.test_client()
 
 
 def test_invalid_method(client):
