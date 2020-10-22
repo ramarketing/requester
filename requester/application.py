@@ -3,7 +3,7 @@ import json
 import socket
 
 from bs4 import BeautifulSoup
-from flask import Flask, request
+from flask import Flask, request, Response
 import requests
 
 
@@ -12,12 +12,16 @@ app = Flask(__name__)
 
 @app.route('/', methods=['POST'])
 def index():
+    data = request.get_json()
     try:
-        host = request.form['host']
-        method = request.form.get('method', 'get')
-        url = request.form['url']
+        host = data['host']
+        method = data.get('method', 'get')
+        url = data['url']
     except KeyError:
-        return 'Invalid payload', 400
+        payload = dict(message='Invalid payload')
+        return Response(
+            json.dumps(payload), 400, mimetype='application/json'
+        )
 
     start = datetime.now()
     try:
@@ -31,8 +35,8 @@ def index():
     try:
         resp = getattr(requests, method.lower())(
             allow_redirects=False,
-            headers=request.form.get('headers', {}),
-            params=request.form.get('params', {}),
+            headers=data.get('headers', {}),
+            params=data.get('params', {}),
             url=url
         )
     except (
@@ -50,7 +54,9 @@ def index():
             resolved_in=diff,
             content=err.__class__.__name__
         )
-        return json.dumps(response)
+        return Response(
+            json.dumps(response), 200, mimetype='application/json'
+        )
 
     content = BeautifulSoup(resp.content, 'html.parser')
     content = content.html
@@ -63,4 +69,6 @@ def index():
         elapsed=int(resp.elapsed.microseconds / 1000),
         content=str(content)
     )
-    return json.dumps(response)
+    return Response(
+        json.dumps(response), 200, mimetype='application/json'
+    )
